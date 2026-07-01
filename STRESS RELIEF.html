@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Calm Zone</title>
+  <meta name="description" content="Campus Calm Zone helps students reduce stress through breathing exercises, mood boosters, relaxation games, gratitude journaling, and wellness activities.">
+  <meta name="author" content="Shubham Khanna">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/11127/11127422.png" type="image/png">
+  <style>
+    :root {
+      --bg-top: #f4efe6;
+      --bg-bottom: #d6eef2;
+      --ink: #17313d;
+      --muted: #5f727d;
+      --card: rgba(255, 255, 255, 0.82);
+      --line: rgba(23, 49, 61, 0.12);
+      --accent: #ff7f50;
+      --accent-deep: #d65b2f;
+      --soft-gold: #ffd98a;
+      --mint: #9fe0cb;
+      --sky: #83cfe6;
+      --rose: #f7b1a4;
+      --shadow: 0 18px 40px rgba(23, 49, 61, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Georgia, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.9), transparent 35%),
+        radial-gradient(circle at top right, rgba(255, 217, 138, 0.4), transparent 25%),
+        linear-gradient(160deg, var(--bg-top), var(--bg-bottom));
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(8px);
+      z-index: -1;
+    }
+
+    body::before {
+      width: 280px;
+      height: 280px;
+      background: rgba(247, 177, 164, 0.28);
+      top: -90px;
+      left: -80px;
+    }
+
+    body::after {
+      width: 320px;
+      height: 320px;
+      background: rgba(131, 207, 230, 0.22);
+      bottom: -120px;
+      right: -110px;
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 28px));
+      margin: 22px auto 48px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 20px;
+      padding: 28px;
+      border-radius: 32px;
+      background: linear-gradient(145deg, rgba(255, 250, 245, 0.92), rgba(255, 255, 255, 0.78));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      align-items: stretch;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 127, 80, 0.14);
+      color: var(--accent-deep);
+      font-size: 0.86rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, p {
+      margin-top: 0;
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 5vw, 4.6rem);
+      line-height: 0.95;
+      margin: 16px 0 14px;
+    }
+
+    .hero p {
+      max-width: 640px;
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.7;
+    }
+
+    .hero-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .hero-stat {
+      min-width: 140px;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+    }
+
+    .hero-stat strong {
+      display: block;
+      font-size: 1.4rem;
+      color: var(--accent-deep);
+    }
+
+    .hero-side {
+      border-radius: 28px;
+      padding: 22px;
+      background:
+        radial-gradient(circle at top, rgba(255, 217, 138, 0.58), transparent 35%),
+        linear-gradient(160deg, #17313d, #295566);
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-side::after {
+      content: "";
+      position: absolute;
+      inset: auto -30px -50px auto;
+      width: 150px;
+      height: 150px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 34% 66% 60% 40%;
+      transform: rotate(20deg);
+    }
+
+    .breathing-ring {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.24);
+      margin: 22px auto 14px;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.05));
+    }
+
+    .breathing-core {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #fff4cf, #ffd08d);
+      box-shadow: 0 0 0 rgba(255, 208, 141, 0.45);
+      animation: breathe 8s infinite ease-in-out;
+    }
+
+    @keyframes breathe {
+      0%, 100% {
+        transform: scale(0.85);
+        box-shadow: 0 0 0 0 rgba(255, 208, 141, 0.15);
+      }
+      50% {
+        transform: scale(1.18);
+        box-shadow: 0 0 0 24px rgba(255, 208, 141, 0);
+      }
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 20px;
+      margin-top: 22px;
+    }
+
+    .card {
+      grid-column: span 4;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .card.wide {
+      grid-column: span 8;
+    }
+
+    .card.full {
+      grid-column: span 12;
+    }
+
+    .section-note {
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .chips,
+    .action-row,
+    .game-actions,
+    .playlist {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip,
+    button {
+      border: 0;
+      border-radius: 16px;
+      padding: 11px 16px;
+      font: inherit;
+    }
+
+    .chip {
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid var(--line);
+      color: var(--ink);
+    }
+
+    button {
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform 0.2s ease, filter 0.2s ease, background 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      filter: saturate(1.02);
+    }
+
+    .primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .secondary {
+      background: #e8f6f8;
+      color: var(--ink);
+    }
+
+    .soft {
+      background: #fff3d1;
+      color: #7c5a00;
+    }
+
+    .mood-meter {
+      display: grid;
+      gap: 14px;
+    }
+
+    .mood-bar {
+      height: 16px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #8fd6b5, #ffd98a, #f7b1a4);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .mood-fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 42%;
+      border-radius: 999px;
+      background: rgba(23, 49, 61, 0.2);
+      transition: width 0.35s ease;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+
+    .result-box,
+    .mini-panel,
+    .quote-box,
+    .journal-box,
+    .game-board,
+    .score-box,
+    .music-card {
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 16px;
+    }
+
+    .result-box strong,
+    .score-box strong {
+      color: var(--accent-deep);
+    }
+
+    .focus-list,
+    .check-list {
+      display: grid;
+      gap: 10px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .focus-list li,
+    .check-list li {
+      padding: 13px 14px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--line);
+    }
+
+    textarea,
+    input[type="text"] {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid rgba(23, 49, 61, 0.18);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.88);
+      font: inherit;
+      color: var(--ink);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .journal-box p,
+    .quote-box p,
+    .music-card p,
+    .mini-panel p {
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 0;
+    }
+
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .memory-card {
+      aspect-ratio: 1 / 1;
+      border-radius: 18px;
+      border: 0;
+      font-size: 1.7rem;
+      background: linear-gradient(145deg, #295566, #17313d);
+      color: transparent;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+
+    .memory-card.revealed,
+    .memory-card.matched {
+      background: linear-gradient(145deg, #fff8ea, #ffe5ba);
+      color: var(--ink);
+    }
+
+    .rps-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 14px 0;
+    }
+
+    .rps-buttons button {
+      min-width: 92px;
+    }
+
+    .timer-pill {
+      display: inline-block;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      margin-bottom: 10px;
+    }
+
+    .big-quote {
+      font-size: 1.15rem;
+      line-height: 1.7;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      margin-top: 22px;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 960px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .card,
+      .card.wide {
+        grid-column: span 12;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        width: min(100% - 18px, 1180px);
+      }
+
+      .hero,
+      .card {
+        padding: 18px;
+        border-radius: 24px;
+      }
+
+      .memory-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+      }
+
+      h1 {
+        font-size: 2.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <div>
+        <span class="eyebrow">Stress Relief For Students</span>
+        <h1>Campus Calm Zone</h1>
+        <p>
+          A one-page comfort corner for college students. Check your stress level, slow your breathing, write out your thoughts,
+          enjoy quick mood boosters, and play small games that help your brain reset between classes, assignments, and exams.
+        </p>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <strong id="liveTime">00:00</strong>
+            Local time
+          </div>
+          <div class="hero-stat">
+            <strong id="dayMessage">Today</strong>
+            Your reminder
+          </div>
+          <div class="hero-stat">
+            <strong id="energyTip">Pause</strong>
+            Small reset
+          </div>
+        </div>
+      </div>
+
+      <aside class="hero-side">
+        <div class="timer-pill" id="breathStep">Breathe in for 4 seconds</div>
+        <div class="breathing-ring">
+          <div class="breathing-core"></div>
+        </div>
+        <h3>Mini Calm Routine</h3>
+        <p>
+          Sit back, drop your shoulders, inhale slowly, and let the page guide your breathing cycle.
+          Little breaks count.
+        </p>
+      </aside>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Stress Level Check</h2>
+        <p class="section-note">Move the slider to match how you feel right now and get a simple suggestion.</p>
+        <div class="mood-meter">
+          <div class="mood-bar">
+            <div class="mood-fill" id="moodFill"></div>
+          </div>
+          <input type="range" id="stressRange" min="1" max="10" value="4">
+          <div class="result-box">
+            <strong id="stressLabel">Stress Level: 4/10</strong>
+            <p id="stressAdvice">You seem a little tense. A short walk, water, and one calm song may help.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Quick Mood Boost</h2>
+        <p class="section-note">Tap for a tiny moment of comfort whenever assignments start feeling heavy.</p>
+        <div class="action-row">
+          <button class="primary" id="quoteBtn">New Quote</button>
+          <button class="secondary" id="jokeBtn">Cheer Me Up</button>
+          <button class="soft" id="challengeBtn">Tiny Challenge</button>
+        </div>
+        <div class="quote-box" style="margin-top: 14px;">
+          <div class="big-quote" id="boostText">You do not need to solve the whole semester tonight. Just do the next small thing.</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Calm Playlist Ideas</h2>
+        <p class="section-note">No internet needed here. These are vibe suggestions you can play on any music app you like.</p>
+        <div class="playlist">
+          <div class="music-card">
+            <strong>Rain + Lo-fi</strong>
+            <p>Best for late-night assignments and soft focus.</p>
+          </div>
+          <div class="music-card">
+            <strong>Acoustic Chill</strong>
+            <p>Great for reading, journaling, and quiet breaks.</p>
+          </div>
+          <div class="music-card">
+            <strong>Instrumental Piano</strong>
+            <p>Helps when your mind feels crowded before exams.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card wide">
+        <h2>Feel Better Menu</h2>
+        <p class="section-note">Choose one tiny action instead of trying to fix everything at once.</p>
+        <div class="chips">
+          <div class="chip">Drink a glass of water</div>
+          <div class="chip">Stretch for 60 seconds</div>
+          <div class="chip">Message one supportive friend</div>
+          <div class="chip">Step away from the screen</div>
+          <div class="chip">Write down only 3 tasks</div>
+          <div class="chip">Reward yourself after one chapter</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Gratitude Journal</h2>
+        <p class="section-note">Write three good things, even if they are very small.</p>
+        <div class="journal-box">
+          <textarea id="journalInput" placeholder="Example: I finished one assignment, had good tea, and laughed with a friend."></textarea>
+          <div class="action-row" style="margin-top: 12px;">
+            <button class="primary" id="saveJournalBtn">Save Note</button>
+            <button class="secondary" id="clearJournalBtn">Clear</button>
+          </div>
+          <p id="journalStatus">Your note stays saved in this browser.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Study Break Checklist</h2>
+        <p class="section-note">A healthy break can reduce stress faster than endless scrolling.</p>
+        <ul class="check-list">
+          <li><input type="checkbox"> Unclench your jaw</li>
+          <li><input type="checkbox"> Roll your shoulders back</li>
+          <li><input type="checkbox"> Look away from the screen</li>
+          <li><input type="checkbox"> Take five slow breaths</li>
+          <li><input type="checkbox"> Tell yourself one kind thing</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Reset Suggestions</h2>
+        <p class="section-note">When stress is high, simple choices are easier than big plans.</p>
+        <ul class="focus-list">
+          <li>High stress: close extra tabs and start with the easiest task.</li>
+          <li>Medium stress: use a 15-minute focus sprint with a short break.</li>
+          <li>Low energy: sit near light, wash your face, and restart gently.</li>
+          <li>Overthinking: write a messy draft first, then improve it later.</li>
+        </ul>
+      </section>
+
+      <section class="card wide">
+        <h2>Game 1: Memory Match</h2>
+        <p class="section-note">A quick brain game to give your mind a different kind of focus for a minute.</p>
+        <div class="score-box">
+          <strong id="memoryStatus">Find all matching cards.</strong>
+        </div>
+        <div class="memory-grid" id="memoryGrid"></div>
+        <div class="game-actions">
+          <button class="primary" id="restartMemoryBtn">Restart Game</button>
+        </div>
+      </section>
+
+      <section class="card wide">
+        <h2>Game 2: Rock Paper Scissors</h2>
+        <p class="section-note">A simple fun break when you want something playful and fast.</p>
+        <div class="mini-panel">
+          <div class="rps-buttons">
+            <button class="primary" data-choice="Rock">Rock</button>
+            <button class="secondary" data-choice="Paper">Paper</button>
+            <button class="soft" data-choice="Scissors">Scissors</button>
+          </div>
+          <div class="score-box">
+            <strong id="rpsResult">Pick a move to play.</strong>
+            <p id="rpsScore">You 0 : 0 Campus Calm</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card full">
+        <h2>Kind Reminder</h2>
+        <p class="section-note">This page can support you, but it does not replace real help.</p>
+        <div class="mini-panel">
+          <p>
+            If stress starts feeling too heavy, talk to a trusted friend, faculty mentor, counselor, or campus mental health service.
+            Asking for help is a strong step, not a weak one.
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      Campus Calm Zone is a single HTML file with built-in CSS and JavaScript for college students.
+    </footer>
+  </div>
+
+  <script>
+    const quotes = [
+      "You do not need to solve the whole semester tonight. Just do the next small thing.",
+      "Rest is not wasted time. It is part of doing well.",
+      "One assignment at a time is still progress.",
+      "Your worth is bigger than your grades.",
+      "Breathe first. Then begin again."
+    ];
+
+    const jokes = [
+      "Why did the student bring a ladder to college? Because the classes were on another level.",
+      "I told my notes to organize themselves. They said, 'We are already in a pile.'",
+      "My study plan and my nap schedule keep having surprise group projects.",
+      "College teaches two things very well: deadlines and creative snack decisions."
+    ];
+
+    const challenges = [
+      "Stand up and stretch for 30 seconds.",
+      "Drink water before touching your phone again.",
+      "Write one task you can finish in 10 minutes.",
+      "Take five slow breaths and relax your shoulders.",
+      "Open the window or step outside for one minute."
+    ];
+
+    const stressRange = document.getElementById("stressRange");
+    const stressLabel = document.getElementById("stressLabel");
+    const stressAdvice = document.getElementById("stressAdvice");
+    const moodFill = document.getElementById("moodFill");
+    const boostText = document.getElementById("boostText");
+    const liveTime = document.getElementById("liveTime");
+    const dayMessage = document.getElementById("dayMessage");
+    const energyTip = document.getElementById("energyTip");
+    const breathStep = document.getElementById("breathStep");
+    const journalInput = document.getElementById("journalInput");
+    const journalStatus = document.getElementById("journalStatus");
+    const memoryGrid = document.getElementById("memoryGrid");
+    const memoryStatus = document.getElementById("memoryStatus");
+    const rpsResult = document.getElementById("rpsResult");
+    const rpsScore = document.getElementById("rpsScore");
+
+    let memoryCards = [];
+    let openedCards = [];
+    let matchedPairs = 0;
+    let lockBoard = false;
+    let playerScore = 0;
+    let calmScore = 0;
+
+    function updateClock() {
+      const now = new Date();
+      liveTime.textContent = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+      const dayNames = ["Sunday reset", "Monday start", "Tuesday flow", "Wednesday balance", "Thursday push", "Friday breathe", "Saturday recharge"];
+      const tips = [
+        "Start small",
+        "Hydrate now",
+        "Take a pause",
+        "One thing at once",
+        "Progress matters",
+        "Stretch a little",
+        "Rest without guilt"
+      ];
+
+      dayMessage.textContent = dayNames[now.getDay()];
+      energyTip.textContent = tips[now.getDay()];
+    }
+
+    function updateStressUI() {
+      const value = Number(stressRange.value);
+      moodFill.style.width = `${value * 10}%`;
+      stressLabel.textContent = `Stress Level: ${value}/10`;
+
+      if (value <= 3) {
+        stressAdvice.textContent = "You seem fairly calm. Keep protecting that peace with good breaks and sleep.";
+      } else if (value <= 6) {
+        stressAdvice.textContent = "You seem a little tense. A short walk, water, and one calm song may help.";
+      } else if (value <= 8) {
+        stressAdvice.textContent = "Stress is climbing. Try the breathing guide, close extra tabs, and start one tiny task.";
+      } else {
+        stressAdvice.textContent = "You seem really overwhelmed. Pause, breathe, and reach out to someone supportive if you need to.";
+      }
+    }
+
+    function randomItem(list) {
+      return list[Math.floor(Math.random() * list.length)];
+    }
+
+    function setBreathText() {
+      const cycle = [
+        "Breathe in for 4 seconds",
+        "Hold for 4 seconds",
+        "Breathe out for 6 seconds",
+        "Pause for 2 seconds"
+      ];
+      let index = 0;
+      breathStep.textContent = cycle[index];
+      setInterval(() => {
+        index = (index + 1) % cycle.length;
+        breathStep.textContent = cycle[index];
+      }, 4000);
+    }
+
+    function saveJournal() {
+      localStorage.setItem("campusCalmJournal", journalInput.value.trim());
+      journalStatus.textContent = journalInput.value.trim()
+        ? "Saved. Come back anytime and your note will still be here."
+        : "Your note is empty right now.";
+    }
+
+    function loadJournal() {
+      const saved = localStorage.getItem("campusCalmJournal") || "";
+      journalInput.value = saved;
+      journalStatus.textContent = saved
+        ? "Your saved gratitude note is ready."
+        : "Your note stays saved in this browser.";
+    }
+
+    function buildMemoryGame() {
+      const symbols = ["A", "B", "C", "D", "E", "F", "G", "H"];
+      memoryCards = [...symbols, ...symbols]
+        .sort(() => Math.random() - 0.5)
+        .map((symbol, index) => ({ id: index, symbol, revealed: false, matched: false }));
+
+      openedCards = [];
+      matchedPairs = 0;
+      lockBoard = false;
+      memoryStatus.textContent = "Find all matching cards.";
+      renderMemoryGame();
+    }
+
+    function renderMemoryGame() {
+      memoryGrid.innerHTML = "";
+
+      memoryCards.forEach((card) => {
+        const button = document.createElement("button");
+        button.className = `memory-card${card.revealed ? " revealed" : ""}${card.matched ? " matched" : ""}`;
+        button.textContent = card.revealed || card.matched ? card.symbol : "?";
+        button.setAttribute("aria-label", "Memory card");
+        button.addEventListener("click", () => flipCard(card.id));
+        memoryGrid.appendChild(button);
+      });
+    }
+
+    function flipCard(id) {
+      if (lockBoard) {
+        return;
+      }
+
+      const card = memoryCards.find((item) => item.id === id);
+      if (!card || card.revealed || card.matched || openedCards.length === 2) {
+        return;
+      }
+
+      card.revealed = true;
+      openedCards.push(card);
+      renderMemoryGame();
+
+      if (openedCards.length === 2) {
+        lockBoard = true;
+        const [first, second] = openedCards;
+
+        if (first.symbol === second.symbol) {
+          first.matched = true;
+          second.matched = true;
+          openedCards = [];
+          matchedPairs += 1;
+          lockBoard = false;
+          memoryStatus.textContent = `Great job. You found ${matchedPairs} of 8 pairs.`;
+
+          if (matchedPairs === 8) {
+            memoryStatus.textContent = "You matched every card. Nice reset for your brain.";
+          }
+          renderMemoryGame();
+        } else {
+          memoryStatus.textContent = "Not a match yet. Try again.";
+          setTimeout(() => {
+            first.revealed = false;
+            second.revealed = false;
+            openedCards = [];
+            lockBoard = false;
+            renderMemoryGame();
+          }, 700);
+        }
+      }
+    }
+
+    function playRps(choice) {
+      const options = ["Rock", "Paper", "Scissors"];
+      const calmChoice = randomItem(options);
+
+      if (choice === calmChoice) {
+        rpsResult.textContent = `Draw. You both picked ${choice}.`;
+      } else if (
+        (choice === "Rock" && calmChoice === "Scissors") ||
+        (choice === "Paper" && calmChoice === "Rock") ||
+        (choice === "Scissors" && calmChoice === "Paper")
+      ) {
+        playerScore += 1;
+        rpsResult.textContent = `You win this round. ${choice} beats ${calmChoice}.`;
+      } else {
+        calmScore += 1;
+        rpsResult.textContent = `Campus Calm wins this one. ${calmChoice} beats ${choice}.`;
+      }
+
+      rpsScore.textContent = `You ${playerScore} : ${calmScore} Campus Calm`;
+    }
+
+    document.getElementById("quoteBtn").addEventListener("click", () => {
+      boostText.textContent = randomItem(quotes);
+    });
+
+    document.getElementById("jokeBtn").addEventListener("click", () => {
+      boostText.textContent = randomItem(jokes);
+    });
+
+    document.getElementById("challengeBtn").addEventListener("click", () => {
+      boostText.textContent = randomItem(challenges);
+    });
+
+    document.getElementById("saveJournalBtn").addEventListener("click", saveJournal);
+    document.getElementById("clearJournalBtn").addEventListener("click", () => {
+      journalInput.value = "";
+      saveJournal();
+    });
+
+    document.getElementById("restartMemoryBtn").addEventListener("click", buildMemoryGame);
+
+    document.querySelectorAll("[data-choice]").forEach((button) => {
+      button.addEventListener("click", () => playRps(button.dataset.choice));
+    });
+
+    stressRange.addEventListener("input", updateStressUI);
+
+    updateClock();
+    updateStressUI();
+    loadJournal();
+    buildMemoryGame();
+    setBreathText();
+    setInterval(updateClock, 1000);
+  </script>
+</body>
+</html>
